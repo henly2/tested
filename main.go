@@ -5,11 +5,12 @@ import (
 	"net/http"
 	"os"
 	"flag"
-	"github.com/gin-gonic/gin"
 	"bytes"
 	"io/ioutil"
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"rsc.io/qr"
 )
 
 type Data struct{
@@ -24,6 +25,14 @@ func main()  {
 	} else if *cmd == "new" {
 		go startNew()
 	}
+
+	code, err := qr.Encode("www.bastionpay.com", qr.Q)
+	if err != nil {
+		os.Exit(1)
+	}
+
+	b := code.PNG()
+	fmt.Println(b)
 }
 
 func test(w http.ResponseWriter, req *http.Request)  {
